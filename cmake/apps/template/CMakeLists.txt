@@ -1,7 +1,7 @@
 add_executable(main
-    ${CMAKE_SOURCE_DIR}/apps/template/Main.cpp 
-    ${CMAKE_SOURCE_DIR}/apps/template/MainWindow.h
-    ${CMAKE_SOURCE_DIR}/apps/template/MainWindow.cpp
+    ${CMAKE_SOURCE_DIR}/../apps/template/Main.cpp 
+    ${CMAKE_SOURCE_DIR}/../apps/template/MainWindow.h
+    ${CMAKE_SOURCE_DIR}/../apps/template/MainWindow.cpp
 )
 
 target_link_libraries(main PRIVATE ds::cg)

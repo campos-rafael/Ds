@@ -190,7 +190,7 @@ set(cg_source_files
 )
 
 add_library(ds_cg_lib STATIC ${cg_header_files} ${cg_source_files})
-target_include_directories(ds_cg_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/cg/include)
+target_include_directories(ds_cg_lib PUBLIC ${CMAKE_SOURCE_DIR}/../cg/include)
 set_target_properties(ds_cg_lib PROPERTIES CXX_EXTENSIONS OFF)
 target_compile_features(ds_cg_lib PRIVATE cxx_std_20)
 target_link_libraries(ds_cg_lib PUBLIC glfw ds_imgui gl3w)
