@@ -1,6 +1,6 @@
 //[]---------------------------------------------------------------[]
 //|                                                                 |
-//| Copyright (C) 2014, 2022 Paulo Pagliosa.                        |
+//| Copyright (C) 2014, 2023 Paulo Pagliosa.                        |
 //|                                                                 |
 //| This software is provided 'as-is', without any express or       |
 //| implied warranty. In no event will the authors be held liable   |
@@ -28,7 +28,7 @@
 // Class definition for OpenGL mesh array object.
 //
 // Author: Paulo Pagliosa
-// Last revision: 19/01/2022
+// Last revision: 28/08/2023
 
 #ifndef __GLMesh_h
 #define __GLMesh_h
@@ -49,10 +49,10 @@ using GLColorBuffer = GLBuffer<Color>;
 class GLMesh: public SharedObject
 {
 public:
-  // Constructor.
+  /// Constructs a GLMesh object.
   GLMesh(const TriangleMesh& mesh);
 
-  // Destructor.
+  /// Destructor.
   ~GLMesh()
   {
     glDeleteBuffers(4, _buffers);
@@ -75,12 +75,6 @@ private:
   GLuint _vao;
   GLuint _buffers[4];
   int _vertexCount;
-
-  template <typename T>
-  static auto size(int n)
-  {
-    return sizeof(T) * n;
-  }
 
 }; // GLMesh
 

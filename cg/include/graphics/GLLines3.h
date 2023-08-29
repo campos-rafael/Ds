@@ -1,6 +1,6 @@
 //[]---------------------------------------------------------------[]
 //|                                                                 |
-//| Copyright (C) 2022, 2023 Paulo Pagliosa.                        |
+//| Copyright (C) 2023 Paulo Pagliosa.                              |
 //|                                                                 |
 //| This software is provided 'as-is', without any express or       |
 //| implied warranty. In no event will the authors be held liable   |
@@ -23,68 +23,63 @@
 //|                                                                 |
 //[]---------------------------------------------------------------[]
 //
-// OVERVIEW: SceneObjectBuilder.h
+// OVERVIEW: GLLines3.h
 // ========
-// Class definition for scene object builder.
+// Class definition for OpenGL 3D line buffer object.
 //
 // Author: Paulo Pagliosa
-// Last revision: 01/08/2023
+// Last revision: 29/08/2023
 
-#ifndef __SceneObjectBuilder_h
-#define __SceneObjectBuilder_h
+#ifndef __GLLines3_h
+#define __GLLines3_h
 
-#include "graph/CameraProxy.h"
-#include "graph/LightProxy.h"
-#include "graph/PrimitiveProxy.h"
-#include "graph/Scene.h"
+#include "geometry/Index2.h"
+#include "graphics/GLPoints3.h"
+#include <cassert>
 
-namespace cg::graph
-{ // begin namespace cg::graph
+namespace cg
+{ // begin namespace cg
+
+class GLLines3Renderer;
 
 
 /////////////////////////////////////////////////////////////////////
 //
-// SceneObjectBuilder: scene object builder class
-// ==================
-class SceneObjectBuilder
+// GLLines3: OpenGL 3D line buffer object class
+// ========
+class GLLines3: public GLPoints3
 {
 public:
-  Scene* scene() const
+  using IndexArray = std::vector<uint32_t>;
+
+  GLLines3(const PointArray& points, IndexArray&& lineSizes);
+
+  GLLines3(const PointArray& points, uint32_t lineCount, uint32_t lineSize):
+    GLLines3{points, IndexArray(lineCount, lineSize)}
   {
-    return _scene;
+    // do nothing
   }
 
-  void setScene(Scene&);
-
-  SceneObject* createEmptyObject();
-  SceneObject* createCameraObject(float aspect = 1, const char* = "");
-  SceneObject* createLightObject(Light::Type, const char* = "");
-  SceneObject* createPrimitiveObject(const TriangleMesh&, const std::string&);
-
-  SceneObject* createObject(const char* name, Component* component)
+  auto lineCount() const
   {
-    assert(name != nullptr);
-
-    auto object = SceneObject::New(*_scene, name);
-
-    object->addComponent(component);
-    return object;
+    return uint32_t(_lineEnds.size());
   }
 
-protected:
-  Reference<Scene> _scene;
-  uint32_t _objectId;
-  uint32_t _cameraId;
-  uint32_t _lightId;
-  uint32_t _primitiveId;
+private:
+  IndexArray _lineEnds;
 
-  auto makePrimitive(const TriangleMesh& mesh, const std::string& meshName)
+  /// Returns the point indices (start,end+1) of the ith line.
+  auto lineIndices(uint32_t i) const
   {
-    return TriangleMeshProxy::New(mesh, meshName);
+    assert(i < _lineEnds.size());
+    return Index2<uint32_t>{i ? _lineEnds[i - 1] : 0, _lineEnds[i]};
   }
 
-}; // SceneObjectBuilder
+  friend GLLines3Renderer;
+  friend GLRenderer;
 
-} // end namespace cg::graph
+}; // GLLines3
 
-#endif // __SceneObjectBuilder_h
+} // end namespace cg
+
+#endif // __GLLines3_h

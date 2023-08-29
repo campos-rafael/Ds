@@ -368,6 +368,21 @@
     <ClInclude Include="..\..\include\graphics\AssetFolder.h">
       <Filter>Header Files\graphics</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\graphics\GLLines3Renderer.h">
+      <Filter>Header Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\graphics\GLLines3.h">
+      <Filter>Header Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\graphics\GLPoints3.h">
+      <Filter>Header Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\graphics\GLPoints3Renderer.h">
+      <Filter>Header Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\graphics\CameraHolder.h">
+      <Filter>Header Files\graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\externals\src\gl3w.c">
@@ -490,9 +505,6 @@
     <ClCompile Include="..\..\src\graph\CameraProxy.cpp">
       <Filter>Source Files\graph</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\include\graphics\TriangleMeshMapper.cpp">
-      <Filter>Source Files\graphics</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\graph\Component.cpp">
       <Filter>Source Files\graph</Filter>
     </ClCompile>
@@ -533,6 +545,21 @@
       <Filter>Source Files\graphics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\graphics\AssetFolder.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\graphics\TriangleMeshMapper.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\graphics\GLLines3Renderer.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\graphics\GLLines3.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\graphics\GLPoints3.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\graphics\GLPoints3Renderer.cpp">
       <Filter>Source Files\graphics</Filter>
     </ClCompile>
   </ItemGroup>

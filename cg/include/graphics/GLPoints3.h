@@ -1,6 +1,6 @@
 //[]---------------------------------------------------------------[]
 //|                                                                 |
-//| Copyright (C) 2022, 2023 Paulo Pagliosa.                        |
+//| Copyright (C) 2023 Paulo Pagliosa.                              |
 //|                                                                 |
 //| This software is provided 'as-is', without any express or       |
 //| implied warranty. In no event will the authors be held liable   |
@@ -23,68 +23,69 @@
 //|                                                                 |
 //[]---------------------------------------------------------------[]
 //
-// OVERVIEW: SceneObjectBuilder.h
+// OVERVIEW: GLPoints3.h
 // ========
-// Class definition for scene object builder.
+// Class definition for OpenGL 3D point buffer object.
 //
 // Author: Paulo Pagliosa
-// Last revision: 01/08/2023
+// Last revision: 29/08/2023
 
-#ifndef __SceneObjectBuilder_h
-#define __SceneObjectBuilder_h
+#ifndef __GLPoints3_h
+#define __GLPoints3_h
 
-#include "graph/CameraProxy.h"
-#include "graph/LightProxy.h"
-#include "graph/PrimitiveProxy.h"
-#include "graph/Scene.h"
+#include "graphics/Color.h"
+#include "graphics/GLBuffer.h"
+#include "math/Vector3.h"
+#include <vector>
 
-namespace cg::graph
-{ // begin namespace cg::graph
+namespace cg
+{ // begin namespace cg
+
+class GLPoints3Renderer;
+class GLRenderer;
+
+using GLColorBuffer = GLBuffer<Color>;
 
 
 /////////////////////////////////////////////////////////////////////
 //
-// SceneObjectBuilder: scene object builder class
-// ==================
-class SceneObjectBuilder
+// GLPoints3: OpenGL 3D point buffer object class
+// =========
+class GLPoints3: public SharedObject
 {
 public:
-  Scene* scene() const
+  using PointArray = std::vector<vec3f>;
+
+  GLPoints3(const PointArray& points);
+
+  ~GLPoints3()
   {
-    return _scene;
+    glDeleteBuffers(1, &_buffer);
+    glDeleteVertexArrays(1, &_vao);
   }
 
-  void setScene(Scene&);
-
-  SceneObject* createEmptyObject();
-  SceneObject* createCameraObject(float aspect = 1, const char* = "");
-  SceneObject* createLightObject(Light::Type, const char* = "");
-  SceneObject* createPrimitiveObject(const TriangleMesh&, const std::string&);
-
-  SceneObject* createObject(const char* name, Component* component)
+  auto size() const
   {
-    assert(name != nullptr);
-
-    auto object = SceneObject::New(*_scene, name);
-
-    object->addComponent(component);
-    return object;
+    return _size;
   }
 
-protected:
-  Reference<Scene> _scene;
-  uint32_t _objectId;
-  uint32_t _cameraId;
-  uint32_t _lightId;
-  uint32_t _primitiveId;
-
-  auto makePrimitive(const TriangleMesh& mesh, const std::string& meshName)
+  void bind()
   {
-    return TriangleMeshProxy::New(mesh, meshName);
+    glBindVertexArray(_vao);
   }
 
-}; // SceneObjectBuilder
+  void setColors(GLColorBuffer* colors, int location = 1);
 
-} // end namespace cg::graph
+private:
+  GLuint _vao;
+  GLuint _buffer;
+  uint32_t _size;
 
-#endif // __SceneObjectBuilder_h
+  friend GLPoints3Renderer;
+  friend GLRenderer;
+
+}; // GLPoints3
+
+} // end namespace cg
+
+#endif // __GLPoints3_h

@@ -1,6 +1,6 @@
 //[]---------------------------------------------------------------[]
 //|                                                                 |
-//| Copyright (C) 2022, 2023 Paulo Pagliosa.                        |
+//| Copyright (C) 2023 Paulo Pagliosa.                              |
 //|                                                                 |
 //| This software is provided 'as-is', without any express or       |
 //| implied warranty. In no event will the authors be held liable   |
@@ -23,68 +23,57 @@
 //|                                                                 |
 //[]---------------------------------------------------------------[]
 //
-// OVERVIEW: SceneObjectBuilder.h
+// OVERVIEW: GLPoints3.cpp
 // ========
-// Class definition for scene object builder.
+// Source file for OpenGL 3D point buffer object.
 //
 // Author: Paulo Pagliosa
-// Last revision: 01/08/2023
+// Last revision: 29/08/2023
 
-#ifndef __SceneObjectBuilder_h
-#define __SceneObjectBuilder_h
+#include "graphics/GLPoints3.h"
+#include <cassert>
 
-#include "graph/CameraProxy.h"
-#include "graph/LightProxy.h"
-#include "graph/PrimitiveProxy.h"
-#include "graph/Scene.h"
+namespace cg
+{ // begin namespace cg
 
-namespace cg::graph
-{ // begin namespace cg::graph
+template <typename T>
+inline auto bufferSize(size_t n)
+{
+  return sizeof(T) * n;
+}
 
 
 /////////////////////////////////////////////////////////////////////
 //
-// SceneObjectBuilder: scene object builder class
-// ==================
-class SceneObjectBuilder
+// GLPoints3 implementation
+// =========
+GLPoints3::GLPoints3(const PointArray& points):
+  _size{uint32_t(points.size())}
 {
-public:
-  Scene* scene() const
+  glGenVertexArrays(1, &_vao);
+  glBindVertexArray(_vao);
+  glGenBuffers(1, &_buffer);
+  if (auto s = bufferSize<vec3f>(_size))
   {
-    return _scene;
+    glBindBuffer(GL_ARRAY_BUFFER, _buffer);
+    glBufferData(GL_ARRAY_BUFFER, s, points.data(), GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(0);
   }
+}
 
-  void setScene(Scene&);
-
-  SceneObject* createEmptyObject();
-  SceneObject* createCameraObject(float aspect = 1, const char* = "");
-  SceneObject* createLightObject(Light::Type, const char* = "");
-  SceneObject* createPrimitiveObject(const TriangleMesh&, const std::string&);
-
-  SceneObject* createObject(const char* name, Component* component)
+void
+GLPoints3::setColors(GLColorBuffer* colors, int location)
+{
+  bind();
+  if (colors != nullptr)
   {
-    assert(name != nullptr);
-
-    auto object = SceneObject::New(*_scene, name);
-
-    object->addComponent(component);
-    return object;
+    assert(colors->size() == _size);
+    colors->bind();
+    glVertexAttribPointer(location, 4, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(location);
   }
+  glVertexAttrib4f(location, 0, 0, 0, 0);
+}
 
-protected:
-  Reference<Scene> _scene;
-  uint32_t _objectId;
-  uint32_t _cameraId;
-  uint32_t _lightId;
-  uint32_t _primitiveId;
-
-  auto makePrimitive(const TriangleMesh& mesh, const std::string& meshName)
-  {
-    return TriangleMeshProxy::New(mesh, meshName);
-  }
-
-}; // SceneObjectBuilder
-
-} // end namespace cg::graph
-
-#endif // __SceneObjectBuilder_h
+} // end namespace cg

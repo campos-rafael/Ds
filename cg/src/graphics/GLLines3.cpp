@@ -1,6 +1,6 @@
 //[]---------------------------------------------------------------[]
 //|                                                                 |
-//| Copyright (C) 2022, 2023 Paulo Pagliosa.                        |
+//| Copyright (C) 2023 Paulo Pagliosa.                              |
 //|                                                                 |
 //| This software is provided 'as-is', without any express or       |
 //| implied warranty. In no event will the authors be held liable   |
@@ -23,68 +23,29 @@
 //|                                                                 |
 //[]---------------------------------------------------------------[]
 //
-// OVERVIEW: SceneObjectBuilder.h
+// OVERVIEW: GLLines3.cpp
 // ========
-// Class definition for scene object builder.
+// Source file for OpenGL 3D line buffer object.
 //
 // Author: Paulo Pagliosa
-// Last revision: 01/08/2023
+// Last revision: 29/08/2023
 
-#ifndef __SceneObjectBuilder_h
-#define __SceneObjectBuilder_h
+#include "graphics/GLLines3.h"
 
-#include "graph/CameraProxy.h"
-#include "graph/LightProxy.h"
-#include "graph/PrimitiveProxy.h"
-#include "graph/Scene.h"
-
-namespace cg::graph
-{ // begin namespace cg::graph
+namespace cg
+{ // begin namespace cg
 
 
 /////////////////////////////////////////////////////////////////////
 //
-// SceneObjectBuilder: scene object builder class
-// ==================
-class SceneObjectBuilder
+// GLLines3 implementation
+// ========
+GLLines3::GLLines3(const PointArray& points, IndexArray&& lineSizes):
+  GLPoints3{points},
+  _lineEnds(std::move(lineSizes))
 {
-public:
-  Scene* scene() const
-  {
-    return _scene;
-  }
+  for (size_t n = _lineEnds.size(), i = 1; i < n; ++i)
+    _lineEnds[i] += _lineEnds[i - 1];
+}
 
-  void setScene(Scene&);
-
-  SceneObject* createEmptyObject();
-  SceneObject* createCameraObject(float aspect = 1, const char* = "");
-  SceneObject* createLightObject(Light::Type, const char* = "");
-  SceneObject* createPrimitiveObject(const TriangleMesh&, const std::string&);
-
-  SceneObject* createObject(const char* name, Component* component)
-  {
-    assert(name != nullptr);
-
-    auto object = SceneObject::New(*_scene, name);
-
-    object->addComponent(component);
-    return object;
-  }
-
-protected:
-  Reference<Scene> _scene;
-  uint32_t _objectId;
-  uint32_t _cameraId;
-  uint32_t _lightId;
-  uint32_t _primitiveId;
-
-  auto makePrimitive(const TriangleMesh& mesh, const std::string& meshName)
-  {
-    return TriangleMeshProxy::New(mesh, meshName);
-  }
-
-}; // SceneObjectBuilder
-
-} // end namespace cg::graph
-
-#endif // __SceneObjectBuilder_h
+} // end namespace cg

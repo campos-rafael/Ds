@@ -1,6 +1,6 @@
 //[]---------------------------------------------------------------[]
 //|                                                                 |
-//| Copyright (C) 2022, 2023 Paulo Pagliosa.                        |
+//| Copyright (C) 2023 Paulo Pagliosa.                              |
 //|                                                                 |
 //| This software is provided 'as-is', without any express or       |
 //| implied warranty. In no event will the authors be held liable   |
@@ -23,68 +23,91 @@
 //|                                                                 |
 //[]---------------------------------------------------------------[]
 //
-// OVERVIEW: SceneObjectBuilder.h
+// OVERVIEW: GLLines3Renderer.h
 // ========
-// Class definition for scene object builder.
+// Class definition for OpenGL 3D lines renderer.
 //
 // Author: Paulo Pagliosa
-// Last revision: 01/08/2023
+// Last revision: 29/08/2023
 
-#ifndef __SceneObjectBuilder_h
-#define __SceneObjectBuilder_h
+#ifndef __GLLines3Renderer_h
+#define __GLLines3Renderer_h
 
-#include "graph/CameraProxy.h"
-#include "graph/LightProxy.h"
-#include "graph/PrimitiveProxy.h"
-#include "graph/Scene.h"
+#include "graphics/CameraHolder.h"
+#include "graphics/GLGraphics3.h"
+#include "graphics/GLLines3.h"
 
-namespace cg::graph
-{ // begin namespace cg::graph
+namespace cg
+{ // begin namespace cg
 
 
 /////////////////////////////////////////////////////////////////////
 //
-// SceneObjectBuilder: scene object builder class
-// ==================
-class SceneObjectBuilder
+// GLLines3Renderer: OpenGL 3D lines renderer class
+// ================
+class GLLines3Renderer: public CameraHolder
 {
 public:
-  Scene* scene() const
+  bool usePointColors{};
+
+  GLLines3Renderer(Camera* camera = nullptr):
+    CameraHolder{camera}
   {
-    return _scene;
+    // do nothing
   }
 
-  void setScene(Scene&);
+  void begin();
 
-  SceneObject* createEmptyObject();
-  SceneObject* createCameraObject(float aspect = 1, const char* = "");
-  SceneObject* createLightObject(Light::Type, const char* = "");
-  SceneObject* createPrimitiveObject(const TriangleMesh&, const std::string&);
-
-  SceneObject* createObject(const char* name, Component* component)
+  void setLineColor(const Color& color)
   {
-    assert(name != nullptr);
-
-    auto object = SceneObject::New(*_scene, name);
-
-    object->addComponent(component);
-    return object;
+    _program.setUniformVec4(_program.lineColorLoc, color);
   }
 
-protected:
-  Reference<Scene> _scene;
-  uint32_t _objectId;
-  uint32_t _cameraId;
-  uint32_t _lightId;
-  uint32_t _primitiveId;
-
-  auto makePrimitive(const TriangleMesh& mesh, const std::string& meshName)
+  void setLineWidth(float width)
   {
-    return TriangleMeshProxy::New(mesh, meshName);
+    _lineWidth = width;
   }
 
-}; // SceneObjectBuilder
+  void render(GLLines3&, const mat4f&);
+  void render(GLLines3&, const vec3f&, const mat3f&, const vec3f&);
 
-} // end namespace cg::graph
+  void render(GLLines3& lines)
+  {
+    render(lines, mat4f::identity());
+  }
 
-#endif // __SceneObjectBuilder_h
+  void end();
+
+private:
+  struct GLState
+  {
+    GLSL::Program* program;
+    float lineWidth;
+    int vao;
+  };
+
+  struct GLProgram: public GLSL::Program
+  {
+    GLint mvpMatrixLoc;
+    GLint usePointColorsLoc;
+    GLint lineColorLoc;
+
+    GLProgram();
+
+  private:
+    void initProgram();
+    void initUniformLocations();
+
+  }; // GLProgram
+
+  GLProgram _program;
+  GLState _lastState;
+  float _lineWidth{1};
+
+  void updateView();
+
+}; // GLLines3Renderer
+
+} // end namespace cg
+
+#endif // __GLLines3Renderer_h

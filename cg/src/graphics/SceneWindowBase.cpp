@@ -28,8 +28,9 @@
 // Source file for scene window base.
 //
 // Author: Paulo Pagliosa
-// Last revision: 04/07/2023
+// Last revision: 01/08/2023
 
+#include "graphics/Assets.h"
 #include "graphics/Renderer.h"
 #include "graphics/SceneWindowBase.h"
 
@@ -298,7 +299,7 @@ SceneWindowBase::showErrorMessage(const char* message) const
     ImGuiWindowFlags_AlwaysAutoResize))
   {
     open = true;
-    ImGui::Text(message);
+    ImGui::Text("%s", message);
     ImGui::Separator();
     if (ImGui::Button("Close"))
     {
@@ -354,7 +355,7 @@ SceneWindowBase::mouseButtonInputEvent(int button, int actions, int mods)
 bool
 SceneWindowBase::mouseMoveEvent(double xPos, double yPos)
 {
-  if (!_dragFlags)
+  if (!uint32_t(_dragFlags))
     return false;
   _mouse.cx = (int)xPos;
   _mouse.cy = (int)yPos;
@@ -436,6 +437,17 @@ viewportToNDC(int x, int y)
 }
 
 } // end namespace
+
+Material*
+SceneWindowBase::createMaterial()
+{
+  auto& map = Assets::materials();
+  auto material = new Material{Color::white};
+
+  material->setName("Material %d", int(map.size()));
+  map.emplace(material->name(), material);
+  return material;
+}
 
 Ray3f
 SceneWindowBase::makeRay(int x, int y) const

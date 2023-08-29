@@ -1,6 +1,6 @@
 //[]---------------------------------------------------------------[]
 //|                                                                 |
-//| Copyright (C) 2022, 2023 Paulo Pagliosa.                        |
+//| Copyright (C) 2023 Paulo Pagliosa.                              |
 //|                                                                 |
 //| This software is provided 'as-is', without any express or       |
 //| implied warranty. In no event will the authors be held liable   |
@@ -23,68 +23,52 @@
 //|                                                                 |
 //[]---------------------------------------------------------------[]
 //
-// OVERVIEW: SceneObjectBuilder.h
+// OVERVIEW: CameraHolder.h
 // ========
-// Class definition for scene object builder.
+// Class definition for camera holder.
 //
 // Author: Paulo Pagliosa
-// Last revision: 01/08/2023
+// Last revision: 29/08/2023
 
-#ifndef __SceneObjectBuilder_h
-#define __SceneObjectBuilder_h
+#ifndef __CameraHolder_h
+#define __CameraHolder_h
 
-#include "graph/CameraProxy.h"
-#include "graph/LightProxy.h"
-#include "graph/PrimitiveProxy.h"
-#include "graph/Scene.h"
+#include "graphics/Camera.h"
 
-namespace cg::graph
-{ // begin namespace cg::graph
+namespace cg
+{ // begin namespace cg
 
 
 /////////////////////////////////////////////////////////////////////
 //
-// SceneObjectBuilder: scene object builder class
-// ==================
-class SceneObjectBuilder
+// CameraHolder: camera holder class
+// ============
+class CameraHolder: public SharedObject
 {
 public:
-  Scene* scene() const
+  Camera* camera() const
   {
-    return _scene;
+    return _camera;
   }
 
-  void setScene(Scene&);
-
-  SceneObject* createEmptyObject();
-  SceneObject* createCameraObject(float aspect = 1, const char* = "");
-  SceneObject* createLightObject(Light::Type, const char* = "");
-  SceneObject* createPrimitiveObject(const TriangleMesh&, const std::string&);
-
-  SceneObject* createObject(const char* name, Component* component)
+  void setCamera(Camera* camera)
   {
-    assert(name != nullptr);
-
-    auto object = SceneObject::New(*_scene, name);
-
-    object->addComponent(component);
-    return object;
+    if (camera != _camera.get())
+      (_camera = camera ? camera : new Camera{})->update();
   }
 
 protected:
-  Reference<Scene> _scene;
-  uint32_t _objectId;
-  uint32_t _cameraId;
-  uint32_t _lightId;
-  uint32_t _primitiveId;
-
-  auto makePrimitive(const TriangleMesh& mesh, const std::string& meshName)
+  CameraHolder(Camera* camera = nullptr):
+    _camera{!camera ? new Camera{} : camera}
   {
-    return TriangleMeshProxy::New(mesh, meshName);
+    // do nothing
   }
 
-}; // SceneObjectBuilder
+private:
+  Reference<Camera> _camera;
 
-} // end namespace cg::graph
+}; // CameraHolder
 
-#endif // __SceneObjectBuilder_h
+} // end namespace cg
+
+#endif // __CameraHolder_h
