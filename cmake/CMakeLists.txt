@@ -109,7 +109,6 @@ set(cg_header_files
     ../cg/include/graphics/SceneWindowBase.h
     ../cg/include/graphics/Shape.h
     ../cg/include/graphics/TransformableObject.h
-    ../cg/include/graphics/TriangleMeshMapper.cpp
     ../cg/include/graphics/TriangleMeshMapper.h
     ../cg/include/graphics/TriangleMeshShape.h
 
@@ -183,6 +182,7 @@ set(cg_source_files
     ../cg/src/graphics/SceneWindowBase.cpp
     ../cg/src/graphics/Shape.cpp
     ../cg/src/graphics/TransformableObject.cpp
+    ../cg/src/graphics/TriangleMeshMapper.cpp
     ../cg/src/graphics/TriangleMeshShape.cpp
 
     # utils directory
