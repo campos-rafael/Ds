@@ -1,5 +1,8 @@
 include(FetchContent)
 
+get_filename_component(DEPS_BASE_DIR "../ds-third-party-libs" REALPATH BASE_DIR "${CMAKE_BINARY_DIR}")
+set(FETCHCONTENT_BASE_DIR ${DEPS_BASE_DIR})
+
 FetchContent_Declare(
     gl3w
     GIT_REPOSITORY https://github.com/skaslev/gl3w.git

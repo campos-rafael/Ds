@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.25)
-project(Ds LANGUAGES CXX CUDA C)
+
+set(namespace "ds")
+project(Ds LANGUAGES CXX CUDA C VERSION 1.0.0)
+
+include(GNUInstallDirs)
 
 # Fetches and builds ImGui
 include(third-party.cmake)
@@ -9,190 +13,256 @@ add_subdirectory(apps)
 
 set(cg_header_files
     # core directory
-   ../cg/include/core/AllocableObject.h
-   ../cg/include/core/Array.h
-   ../cg/include/core/BlockAllocable.h
-   ../cg/include/core/BlockAllocator.h
-   ../cg/include/core/ContentHolder.h
-   ../cg/include/core/Exception.h
-   ../cg/include/core/Flags.h
-   ../cg/include/core/Globals.h
-   ../cg/include/core/List.h
-   ../cg/include/core/ListBase.h
-   ../cg/include/core/NameableObject.h
-   ../cg/include/core/ObjectList.h
-   ../cg/include/core/ObjectPool.h
-   ../cg/include/core/SharedObject.h
-   ../cg/include/core/SoA.h
-   ../cg/include/core/StandardAllocator.h
-   
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/core/AllocableObject.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/core/Array.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/core/BlockAllocable.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/core/BlockAllocator.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/core/ContentHolder.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/core/Exception.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/core/Flags.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/core/Globals.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/core/List.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/core/ListBase.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/core/NameableObject.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/core/ObjectList.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/core/ObjectPool.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/core/SharedObject.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/core/SoA.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/core/StandardAllocator.h
     # debug directory
-    ../cg/include/debug/AnimatedAlgorithm.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/debug/AnimatedAlgorithm.h
 
     # geometry directory
-    ../cg/include/geometry/Bounds2.h
-    ../cg/include/geometry/Bounds3.h
-    ../cg/include/geometry/BVH.h
-    ../cg/include/geometry/Grid2.h
-    ../cg/include/geometry/Grid3.h
-    ../cg/include/geometry/GridBase.h
-    ../cg/include/geometry/Index2.h
-    ../cg/include/geometry/Index3.h
-    ../cg/include/geometry/IndexList.h
-    ../cg/include/geometry/Intersection.h
-    ../cg/include/geometry/KNNHelper.h
-    ../cg/include/geometry/Line.h
-    ../cg/include/geometry/MeshSweeper.h
-    ../cg/include/geometry/Octree.h
-    ../cg/include/geometry/Point2.h
-    ../cg/include/geometry/Point3.h
-    ../cg/include/geometry/PointArray.h
-    ../cg/include/geometry/PointGrid2.h
-    ../cg/include/geometry/PointGrid3.h
-    ../cg/include/geometry/PointGridBase.h
-    ../cg/include/geometry/PointHolder.h
-    ../cg/include/geometry/PointOctree.h
-    ../cg/include/geometry/PointQuadtree.h
-    ../cg/include/geometry/PointTreeBase.h
-    ../cg/include/geometry/Quad.h
-    ../cg/include/geometry/Quadtree.h
-    ../cg/include/geometry/Ray.h
-    ../cg/include/geometry/TreeBase.h
-    ../cg/include/geometry/Triangle.h
-    ../cg/include/geometry/TriangleMesh.h
-    ../cg/include/geometry/TriangleMeshBVH.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/geometry/Bounds2.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/geometry/Bounds3.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/geometry/BVH.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/geometry/Grid2.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/geometry/Grid3.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/geometry/GridBase.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/geometry/Index2.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/geometry/Index3.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/geometry/IndexList.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/geometry/Intersection.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/geometry/KNNHelper.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/geometry/Line.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/geometry/MeshSweeper.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/geometry/Octree.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/geometry/Point2.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/geometry/Point3.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/geometry/PointArray.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/geometry/PointGrid2.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/geometry/PointGrid3.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/geometry/PointGridBase.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/geometry/PointHolder.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/geometry/PointOctree.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/geometry/PointQuadtree.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/geometry/PointTreeBase.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/geometry/Quad.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/geometry/Quadtree.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/geometry/Ray.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/geometry/TreeBase.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/geometry/Triangle.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/geometry/TriangleMesh.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/geometry/TriangleMeshBVH.h
 
-    # graph directory
-    ../cg/include/graph/CameraProxy.h
-    ../cg/include/graph/Component.h
-    ../cg/include/graph/ComponentProxy.h
-    ../cg/include/graph/LightProxy.h
-    ../cg/include/graph/PrimitiveProxy.h
-    ../cg/include/graph/Scene.h
-    ../cg/include/graph/SceneNode.h
-    ../cg/include/graph/SceneObject.h
-    ../cg/include/graph/SceneObjectBuilder.h
-    ../cg/include/graph/SceneWindow.h
-    ../cg/include/graph/Transform.h
+   # graph directory
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graph/CameraProxy.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graph/Component.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graph/ComponentProxy.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graph/LightProxy.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graph/PrimitiveProxy.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graph/Scene.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graph/SceneNode.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graph/SceneObject.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graph/SceneObjectBuilder.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graph/SceneWindow.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graph/Transform.h
+  
+   # graphics directory
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graphics/Actor.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graphics/Application.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graphics/Assets.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graphics/AssetFolder.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graphics/Camera.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graphics/Color.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graphics/GLBuffer.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graphics/GLFramebuffer.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graphics/GLGraphics2.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graphics/GLGraphics3.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graphics/GLGraphicsBase.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graphics/GLImage.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graphics/GLMesh.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graphics/GLMeshRenderer.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graphics/GLProgram.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graphics/GLRenderer.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graphics/GLRendererBase.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graphics/GLRenderWindow2.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graphics/GLRenderWindow3.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graphics/GLTextureFramebuffer.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graphics/GLWindow.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graphics/Image.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graphics/Light.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graphics/Material.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graphics/Primitive.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graphics/PrimitiveBVH.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graphics/PrimitiveMapper.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graphics/Renderer.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graphics/SceneBase.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graphics/SceneEditor.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graphics/SceneWindowBase.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graphics/Shape.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graphics/TransformableObject.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graphics/TriangleMeshMapper.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/graphics/TriangleMeshShape.h
 
-    # graphics directory
-    ../cg/include/graphics/Actor.h
-    ../cg/include/graphics/Application.h
-    ../cg/include/graphics/Assets.h
-    ../cg/include/graphics/AssetFolder.h
-    ../cg/include/graphics/Camera.h
-    ../cg/include/graphics/Color.h
-    ../cg/include/graphics/GLBuffer.h
-    ../cg/include/graphics/GLFramebuffer.h
-    ../cg/include/graphics/GLGraphics2.h
-    ../cg/include/graphics/GLGraphics3.h
-    ../cg/include/graphics/GLGraphicsBase.h
-    ../cg/include/graphics/GLImage.h
-    ../cg/include/graphics/GLMesh.h
-    ../cg/include/graphics/GLMeshRenderer.h
-    ../cg/include/graphics/GLProgram.h
-    ../cg/include/graphics/GLRenderer.h
-    ../cg/include/graphics/GLRendererBase.h
-    ../cg/include/graphics/GLRenderWindow2.h
-    ../cg/include/graphics/GLRenderWindow3.h
-    ../cg/include/graphics/GLTextureFramebuffer.h
-    ../cg/include/graphics/GLWindow.h
-    ../cg/include/graphics/Image.h
-    ../cg/include/graphics/Light.h
-    ../cg/include/graphics/Material.h
-    ../cg/include/graphics/Primitive.h
-    ../cg/include/graphics/PrimitiveBVH.h
-    ../cg/include/graphics/PrimitiveMapper.h
-    ../cg/include/graphics/Renderer.h
-    ../cg/include/graphics/SceneBase.h
-    ../cg/include/graphics/SceneEditor.h
-    ../cg/include/graphics/SceneWindowBase.h
-    ../cg/include/graphics/Shape.h
-    ../cg/include/graphics/TransformableObject.h
-    ../cg/include/graphics/TriangleMeshMapper.h
-    ../cg/include/graphics/TriangleMeshShape.h
+# math directory
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/math/Matrix3x3.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/math/Matrix4x4.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/math/Quaternion.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/math/Real.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/math/RealLimits.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/math/Vector2.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/math/Vector3.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/math/Vector4.h
 
-    # math directory
-    ../cg/include/math/Matrix3x3.h
-    ../cg/include/math/Matrix4x4.h
-    ../cg/include/math/Quaternion.h
-    ../cg/include/math/Real.h
-    ../cg/include/math/RealLimits.h
-    ../cg/include/math/Vector2.h
-    ../cg/include/math/Vector3.h
-    ../cg/include/math/Vector4.h
-
-    # utils directory
-    ../cg/include/utils/MeshReader.h
-    ../cg/include/utils/Stopwatch.h
+   # utils directory
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/utils/MeshReader.h
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/include/utils/Stopwatch.h
 )
 
 set(cg_source_files
     # core files
-    ../cg/src/core/BlockAllocator.cpp
-    ../cg/src/core/Exception.cpp
-    ../cg/src/core/NameableObject.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/core/BlockAllocator.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/core/Exception.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/core/NameableObject.cpp
+  
+   # debug directory
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/debug/AnimatedAlgorithm.cpp
 
-    # debug directory
-    ../cg/src/debug/AnimatedAlgorithm.cpp
-
-    # geometry directory
-    ../cg/src/geometry/BVH.cpp
-    ../cg/src/geometry/MeshSweeper.cpp
-    ../cg/src/geometry/TriangleMesh.cpp
-    ../cg/src/geometry/TriangleMeshBVH.cpp
-
-    # graph directory
-    ../cg/src/graph/CameraProxy.cpp
-    ../cg/src/graph/Component.cpp
-    ../cg/src/graph/LightProxy.cpp
-    ../cg/src/graph/PrimitiveProxy.cpp
-    ../cg/src/graph/SceneObject.cpp
-    ../cg/src/graph/SceneObjectBuilder.cpp
-    ../cg/src/graph/SceneWindow.cpp
-    ../cg/src/graph/Transform.cpp
-
-    # graphics directory
-    ../cg/src/graphics/Application.cpp
-    ../cg/src/graphics/Assets.cpp
-    ../cg/src/graphics/AssetFolder.cpp
-    ../cg/src/graphics/Camera.cpp
-    ../cg/src/graphics/Color.cpp
-    ../cg/src/graphics/GLFramebuffer.cpp
-    ../cg/src/graphics/GLGraphics2.cpp
-    ../cg/src/graphics/GLGraphics3.cpp
-    ../cg/src/graphics/GLGraphicsBase.cpp
-    ../cg/src/graphics/GLImage.cpp
-    ../cg/src/graphics/GLMesh.cpp
-    ../cg/src/graphics/GLMeshRenderer.cpp
-    ../cg/src/graphics/GLProgram.cpp
-    ../cg/src/graphics/GLRenderer.cpp
-    ../cg/src/graphics/GLRendererBase.cpp
-    ../cg/src/graphics/GLRenderWindow2.cpp
-    ../cg/src/graphics/GLRenderWindow3.cpp
-    ../cg/src/graphics/GLTextureFramebuffer.cpp
-    ../cg/src/graphics/GLWindow.cpp
-    ../cg/src/graphics/Image.cpp
-    ../cg/src/graphics/Light.cpp
-    ../cg/src/graphics/Primitive.cpp
-    ../cg/src/graphics/PrimitiveBVH.cpp
-    ../cg/src/graphics/PrimitiveMapper.cpp
-    ../cg/src/graphics/Renderer.cpp
-    ../cg/src/graphics/SceneEditor.cpp
-    ../cg/src/graphics/SceneWindowBase.cpp
-    ../cg/src/graphics/Shape.cpp
-    ../cg/src/graphics/TransformableObject.cpp
-    ../cg/src/graphics/TriangleMeshMapper.cpp
-    ../cg/src/graphics/TriangleMeshShape.cpp
-
-    # utils directory
-    ../cg/src/utils/MeshReader.cpp
+  # geometry directory
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/geometry/BVH.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/geometry/MeshSweeper.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/geometry/TriangleMesh.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/geometry/TriangleMeshBVH.cpp
+   
+   # graph directory
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graph/CameraProxy.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graph/Component.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graph/LightProxy.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graph/PrimitiveProxy.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graph/SceneObject.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graph/SceneObjectBuilder.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graph/SceneWindow.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graph/Transform.cpp
+  
+   # graphics directory
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graphics/Application.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graphics/Assets.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graphics/AssetFolder.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graphics/Camera.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graphics/Color.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graphics/GLFramebuffer.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graphics/GLGraphics2.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graphics/GLGraphics3.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graphics/GLGraphicsBase.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graphics/GLImage.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graphics/GLMesh.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graphics/GLMeshRenderer.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graphics/GLProgram.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graphics/GLRenderer.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graphics/GLRendererBase.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graphics/GLRenderWindow2.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graphics/GLRenderWindow3.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graphics/GLTextureFramebuffer.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graphics/GLWindow.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graphics/Image.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graphics/Light.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graphics/Primitive.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graphics/PrimitiveBVH.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graphics/PrimitiveMapper.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graphics/Renderer.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graphics/SceneEditor.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graphics/SceneWindowBase.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graphics/Shape.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graphics/TransformableObject.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graphics/TriangleMeshMapper.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/graphics/TriangleMeshShape.cpp
+  
+   # utils directory
+   ${CMAKE_CURRENT_SOURCE_DIR}/../cg/src/utils/MeshReader.cpp
 )
 
-add_library(ds_cg_lib STATIC ${cg_header_files} ${cg_source_files})
-target_include_directories(ds_cg_lib PUBLIC ${CMAKE_SOURCE_DIR}/../cg/include)
-set_target_properties(ds_cg_lib PROPERTIES CXX_EXTENSIONS OFF)
-target_compile_features(ds_cg_lib PRIVATE cxx_std_20)
-target_link_libraries(ds_cg_lib PUBLIC glfw ds_imgui gl3w)
-add_library(ds::cg ALIAS ds_cg_lib)
+add_library(ds_cg STATIC ${cg_header_files} ${cg_source_files})
 
+target_include_directories(ds_cg PUBLIC 
+ $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/../cg/include>
+ $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+
+target_compile_features(ds_cg PRIVATE cxx_std_20)
+target_link_libraries(ds_cg PUBLIC glfw ds_imgui gl3w)
+
+if(DEFINED CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+ message(
+  STATUS
+  "CMAKE_INSTALL_PREFIX is not set.\n"
+  "Default value: ${CMAKE_INSTALL_PREFIX}\n"
+  "Will set it to ${CMAKE_BINARY_DIR}/install"
+  )
+ set(CMAKE_INSTALL_PREFIX
+  ${CMAKE_BINARY_DIR}/install
+  CACHE PATH "Where the library will be installed to" FORCE
+  )
+else()
+ message(
+  STATUS
+  "CMAKE_INSTALL_PREFIX was already set.\n"
+  "Current value: ${CMAKE_INSTALL_PREFIX}"
+  )
+endif()
+
+set_target_properties(ds_cg PROPERTIES PUBLIC_HEADER "${cg_header_files}")
+
+foreach(header ${cg_header_files})
+ file(RELATIVE_PATH header_file_path "${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}" "${header}")
+ get_filename_component(header_directory_path "${header_file_path}" DIRECTORY)
+ install(
+  FILES ${header}
+  DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${header_directory_path}"
+  )
+endforeach()
+
+
+install(TARGETS ds_cg glfw ds_imgui 
+ EXPORT "${PROJECT_NAME}Targets"
+ PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}
+ INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
+install(EXPORT "${PROJECT_NAME}Targets" 
+ FILE "${PROJECT_NAME}Targets.cmake"
+ NAMESPACE ${namespace}::
+ DESTINATION cmake)
+
+include(CMakePackageConfigHelpers)
+
+write_basic_package_version_file(
+ "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+ VERSION ${version}
+ COMPATIBILITY AnyNewerVersion)
+
+# create config file
+configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/Config.cmake.in
+ "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+  INSTALL_DESTINATION cmake
+)
+
+# install config files
+install(FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+    DESTINATION cmake
+)
+# generate the export targets for the build tree
+export(EXPORT "${PROJECT_NAME}Targets"
+    FILE "${CMAKE_CURRENT_BINARY_DIR}/cmake/${PROJECT_NAME}Targets.cmake"
+    NAMESPACE ${namespace}::
+)
