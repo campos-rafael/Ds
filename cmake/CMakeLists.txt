@@ -223,11 +223,16 @@ endif()
 set_target_properties(ds_cg PROPERTIES PUBLIC_HEADER "${cg_header_files}")
 
 foreach(header ${cg_header_files})
- file(RELATIVE_PATH header_file_path "${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}" "${header}")
+ file(RELATIVE_PATH header_file_path "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}" "${header}")
  get_filename_component(header_directory_path "${header_file_path}" DIRECTORY)
+ get_filename_component(header_filename "${header_file_path}" NAME)
+ string(REPLACE "/" ";" DIR_LIST ${header_directory_path})
+ list(LENGTH DIR_LIST DIR_LIST_LENGTH)
+ math(EXPR LAST_INDEX "${DIR_LIST_LENGTH} - 1")
+ list(GET DIR_LIST ${LAST_INDEX} last_dir)
  install(
   FILES ${header}
-  DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${header_directory_path}"
+  DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${last_dir}"
   )
 endforeach()
 
