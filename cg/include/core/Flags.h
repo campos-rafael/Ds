@@ -1,6 +1,6 @@
 //[]---------------------------------------------------------------[]
 //|                                                                 |
-//| Copyright (C) 2014, 2023 Paulo Pagliosa.                        |
+//| Copyright (C) 2014, 2024 Paulo Pagliosa.                        |
 //|                                                                 |
 //| This software is provided 'as-is', without any express or       |
 //| implied warranty. In no event will the authors be held liable   |
@@ -28,7 +28,7 @@
 // Class definition for flags.
 //
 // Author: Paulo Pagliosa
-// Last revision: 30/07/2023
+// Last revision: 05/03/2024
 
 #ifndef __Flags_h
 #define __Flags_h
@@ -40,6 +40,7 @@ namespace cg
 { // begin namespace cg
 
 template <typename Bits>
+HOST DEVICE
 inline constexpr auto
 operator |(Bits a, Bits b)
 {
